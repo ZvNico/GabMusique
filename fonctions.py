@@ -41,12 +41,6 @@ def inversion(array):
         note %= (L + 1)
 
 
-def choisir_musique(f='message.txt'):
-
-    with open(f,'r') as fichier:
-
-
-
 def markov(array, mode=1):
     """
     :param array: liste de notes musicales

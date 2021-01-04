@@ -59,7 +59,7 @@ def calc_duration(figures, d0):
     return dico
 
 
-def read_line_file(f='message.txt', num):
+def read_line_file(f, num):
     """
     Fonction qui prend en paramètres un nom de fichier et un
     numéro de ligne et qui retourne le contenu de la ligne en question.
