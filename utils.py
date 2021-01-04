@@ -59,7 +59,7 @@ def calc_duration(figures, d0):
     return dico
 
 
-def read_line_file(f, num):
+def read_line_file(f='message.txt', num):
     """
     Fonction qui prend en paramètres un nom de fichier et un
     numéro de ligne et qui retourne le contenu de la ligne en question.
@@ -83,8 +83,6 @@ def read_sheet(ligne):
     # on importe nos dictionnaires de fréquences et de durées
     const_pauses = calc_duration(consts.pauses, consts.d0)
     const_frequences = calc_frequency(consts.notes, consts.f_notes)
-    print(const_frequences)
-    print(const_pauses)
 
     frequences = []
     durees = []
@@ -115,5 +113,5 @@ def play_sheet(frequences, pauses):
     """
     for i in range(len(frequences)):
         sound(frequences[i], pauses[i])
-        # bah c'est mieux sans pauses enfait
+        # bah c'est mieux sans pause enfait
         # sleep(pauses[i])
