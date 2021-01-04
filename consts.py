@@ -1,3 +1,4 @@
+bdd = 'message.txt'
 d0 = 125 * 10 ** -3
 notes = ['DO', 'RE', 'MI', 'FA', 'SOL', 'LA', 'SI']
 pauses = ['c', 'n', 'b', 'r']

@@ -1,6 +1,21 @@
 from utils import *
 
 
+def titres_partitions(bdd=consts.bdd):
+    """
+    :param bdd: base de donnée
+    :return: liste de titre de partitions
+    """
+    titres = []
+    with open(bdd, 'r') as fichier:
+        line = fichier.readline()
+        while line != '\n' and line:
+            titres.append(line)
+            fichier.readline()
+            line = fichier.readline()
+    return titres
+
+
 def transposition(array, k):
     """
     Opération de transposition sur une partition musicales
