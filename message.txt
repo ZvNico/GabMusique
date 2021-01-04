@@ -1,11 +1,11 @@
-#1 Joyeux anniversaire 
+#1 Joyeux anniversaire
 SOLc p Zc SOLn LAn SOLn DOn Zc SIb SOLc p Zc SOLn LAn SOLn REn Zc DOb SOLc p Zc SOLn SOLn MIn DOn Zc SIn LAn FAc p Zc FAn MIn DOn REn DOr
 #2 Au claire de la lune
 DOn DOn DOn REn MIb REb DOn MIn REn REn DOr Zr DOn DOn DOn REn MIb REb DOn MIn REn REn DOr Zr REn REn REn REn LAb LAb REn DOn SIn LAn SOLr Zr DOn DOn DOn REn MIb REb DOn MIn REn REn DOr
 #3 Vive le vent
 MIn MIn MIb MIn MIn MIb MIn SOLn DOn REn MIb p Zn FAn FAn FAb FAn MIn MIb MIn REn REn MIn REb SOLb Zc MIn MIn MIb MIn MIn MIb MIn SOLn DOn REn MIb p Zn FAn FAn FAb FAn MIn MIb SOLn SOLn FAn REn DOb p Zc
 #4 Frères jacques
-SOLn LAn SIn SOLn SOLn LAn SIn SOLn SIn DOn REb SIn DOn REb Zn REn MIn REn DOn DIn SOLn REn MIn REn DOn SIn SOLn SOLn REn SOLb SOLn REn SOLb
+SOLn LAn SIn SOLn SOLn LAn SIn SOLn SIn DOn REb SIn DOn REb Zn REn MIn REn DOn SIn SOLn REn MIn REn DOn SIn SOLn SOLn REn SOLb SOLn REn SOLb
 #5 A la claire fontaine
 SOLb SOLn SIn SIn LAn SIn LAn SOLb SOLn SIn SIn LAn SIb SIb SIn LAn SOLn REn SIn REb REn SIn SOLn SIn LAb SOLb SOLn SIn SIn LAc SOLn SIn SOLn SIb SIn LAc SOLn SIn LAn SOLb
 #6 Au feu les pompiers

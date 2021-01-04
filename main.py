@@ -9,11 +9,12 @@ def main():
     titres = titres_partitions(bdd)
     print(titres)
     liste = tk.Listbox(fenetre)
-    play = tk.Button(fenetre, text=liste.curselection(), command=fenetre.quit)
+    play = tk.Button(fenetre, text='Jouer partition',
+                     command=lambda: play_sheet(*read_sheet(read_line_file(bdd, (liste.curselection()[0] + 1) * 2))))
     for i, titre in enumerate(titres):
         liste.insert(i, titre[3:-1])
-    play.pack()
     liste.pack()
+    play.pack()
     fenetre.mainloop()
 
 
