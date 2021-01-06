@@ -2,6 +2,7 @@ import numpy as np
 from time import sleep
 from simpleaudio import play_buffer
 import consts
+import threading
 
 
 def sound(freq, duration):
@@ -105,6 +106,15 @@ def read_sheet(ligne):
 
 
 def play_sheet(frequences, pauses):
+    """
+    Fonction intermédiaire qui sert a lancer la fonction playsheet en background
+    """
+    playing_thread = threading.Thread(target=play_sheet2, name="Downloader", args=(frequences, pauses))
+    playing_thread.start()
+    return playing_thread
+
+
+def play_sheet2(frequences, pauses):
     """
     Fonction qui à partir d’une séquence de fréquences et de durées, appelle
     les fonctions sound et sleep pour lire la partition musicale.

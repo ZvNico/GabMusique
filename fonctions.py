@@ -1,4 +1,24 @@
 from utils import *
+from tkinter import simpledialog
+
+
+def append_partition(line, bdd=consts.bdd):
+    with open(bdd, 'r+') as fichier:
+        fichier.readline()
+        temp = fichier.readline()
+        i = 1
+        while temp:
+            if temp == line:
+                simpledialog.messagebox.showerror(
+                    message="Cette partition est déjà dans la base de donnée, il s'agit de la partition " + str(i))
+                return
+            fichier.readline()
+            temp = fichier.readline()
+            i += 1
+        titre = simpledialog.askstring(title="Ajouter partition", prompt="Rentrer le titre de votre partition")
+        if titre:
+            fichier.writelines(f"#{i} {titre}\n")
+            fichier.writelines(line)
 
 
 def titres_partitions(bdd=consts.bdd):
@@ -9,26 +29,11 @@ def titres_partitions(bdd=consts.bdd):
     titres = []
     with open(bdd, 'r') as fichier:
         line = fichier.readline()
-        while line != '\n' and line:
+        while line:
             titres.append(line)
             fichier.readline()
             line = fichier.readline()
     return titres
-
-
-def transposition(array, k):
-    """
-    Opération de transposition sur une partition musicales
-    :param array: liste de notes musicales
-    :param k: entier
-    """
-    # L est la taille de l'array
-    L = len(array)
-    for note in array:
-        # pour chaque note on ajouter k
-        note += k
-        # on met au modulo L car on veut que la note reste dans l'intervalle de l'array originel
-        note %= (L + 1)
 
 
 def frequency_to_notes(frequences):
@@ -43,17 +48,37 @@ def frequency_to_notes(frequences):
     return notes
 
 
+def transposition(array, k):
+    """
+    Opération de transposition sur une partition musicales
+    :param array: liste de notes musicales
+    :param k: entier
+    """
+    # L est la taille de l'array
+    L = len(array)
+    L = frequency_to_notes(array)
+    for note in array:
+        # pour chaque note on ajouter k
+        note += k
+        # on met au modulo L car on veut que la note reste dans l'intervalle de l'array originel
+        note %= (L + 1)
+        note = consts.f_notes[note - 1]
+
+
 def inversion(array):
     """
     Opération d'inversion sur un ensemble de notes musicales
     :param array: liste de notes musicales
     """
     L = len(array)
+    L = frequency_to_notes(array)
+
     for note in array:
         # on inverse chaque note
         note = (L + 1) - note
         # on met au modulo L car on veut que la note reste dans l'intervalle de l'array originel
         note %= (L + 1)
+        note = consts.f_notes[note - 1]
 
 
 def markov(array, mode=1):
