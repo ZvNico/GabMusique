@@ -6,7 +6,6 @@ from fonctions import *
 
 
 class Application(tk.Tk):
-
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.threads = []
@@ -22,7 +21,7 @@ class Application(tk.Tk):
 
         self.frames = {}
 
-        for F in (Menu, Page1, Page2):
+        for F in (Menu, Page1, Page2, Page3, Page4):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -32,6 +31,16 @@ class Application(tk.Tk):
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+
+
+class Liste(tk.Frame):
+    def __init__(self, parent, controller):
+        titres = titres_partitions(bdd)
+        tk.Frame.__init__(self, parent)
+        liste = tk.Listbox(self)
+        for i, titre in enumerate(titres):
+            liste.insert(i, titre[3:-1])
+        liste.pack(side="top", fill="both", expand=True)
 
 
 class Menu(tk.Frame):
@@ -54,7 +63,7 @@ class Menu(tk.Frame):
         controller.threads.append(play_sheet(*read_sheet(read_line_file(filename, 2))))
 
 
-class Page1(tk.Frame):
+class Page1(Liste):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         titres = titres_partitions(bdd)
@@ -73,11 +82,11 @@ class Page2(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text='Ajouter une partition')
         bouton1 = tk.Button(self, text='depuis un fichier',
-                            command=lambda: controller.show_frame(Page1))
+                            command=lambda: self.add_from_file())
         bouton2 = tk.Button(self, text='par inversion une partition existante',
-                            command=lambda: controller.show_frame(Page1))
+                            command=lambda: controller.show_frame(Page3))
         bouton3 = tk.Button(self, text='par transposition une partition existante',
-                            command=lambda: controller.show_frame(Page1))
+                            command=lambda: controller.show_frame(Page4))
         bouton4 = tk.Button(self, text='en créant une partition depuis celles déjà existante',
                             command=lambda: controller.show_frame(Page1))
         label.pack(side="top", fill="x")
@@ -85,3 +94,19 @@ class Page2(tk.Frame):
         bouton2.pack(side="top", fill="x")
         bouton3.pack(side="top", fill="x")
         bouton4.pack(side="top", fill="x")
+
+    def add_from_file(self):
+        filename = filedialog.askopenfilename(initialdir="/",
+                                              title="Selectionner une partition",
+                                              filetypes=(("txt files", "*.txt"),))
+        append_partition(read_line_file(filename, 1))
+
+
+class Page4(tk.Frame):
+    def __init__(self, parent, controller):
+        titres = titres_partitions(bdd)
+        tk.Frame.__init__(self, parent)
+        liste = tk.Listbox(self)
+        for i, titre in enumerate(titres):
+            liste.insert(i, titre[3:-1])
+        liste.pack(side="top", fill="both", expand=True)
