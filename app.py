@@ -21,7 +21,7 @@ class Application(tk.Tk):
 
         self.frames = {}
 
-        for F in (Menu, Page1, Page2, Page4):
+        for F in (Menu, Page1, Page2, Page3, Page4):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -35,12 +35,13 @@ class Application(tk.Tk):
 
 class Liste(tk.Frame):
     def __init__(self, parent, controller):
-        titres = titres_partitions(bdd)
         tk.Frame.__init__(self, parent)
-        liste = tk.Listbox(self)
-        for i, titre in enumerate(titres):
-            liste.insert(i, titre[3:-1])
-        liste.pack(side="top", fill="both", expand=True)
+        self.titres = titres_partitions(bdd)
+        tk.Frame.__init__(self, parent)
+        self.liste = tk.Listbox(self)
+        for i, titre in enumerate(self.titres):
+            self.liste.insert(i, titre[3:-1])
+        self.liste.pack(side="top", fill="both", expand=True)
 
 
 class Menu(tk.Frame):
@@ -65,15 +66,10 @@ class Menu(tk.Frame):
 
 class Page1(Liste):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        titres = titres_partitions(bdd)
-        liste = tk.Listbox(self)
+        super().__init__(parent, controller)
         play = tk.Button(self, text='Jouer la partition',
                          command=lambda: play_sheet(
-                             *read_sheet(read_line_file(bdd, (liste.curselection()[0] + 1) * 2))))
-        for i, titre in enumerate(titres):
-            liste.insert(i, titre[3:-1])
-        liste.pack(side="top", fill="both", expand=True)
+                             *read_sheet(read_line_file(bdd, (self.liste.curselection()[0] + 1) * 2))))
         play.pack(side="top", fill="x")
 
 
@@ -88,7 +84,7 @@ class Page2(tk.Frame):
         bouton3 = tk.Button(self, text='par transposition une partition existante',
                             command=lambda: controller.show_frame(Page4))
         bouton4 = tk.Button(self, text='en créant une partition depuis celles déjà existante',
-                            command=lambda: controller.show_frame(Page1))
+                            command=lambda: controller.show_frame(Page4))
         label.pack(side="top", fill="x")
         bouton1.pack(side="top", fill="x")
         bouton2.pack(side="top", fill="x")
@@ -102,11 +98,28 @@ class Page2(tk.Frame):
         append_partition(read_line_file(filename, 1))
 
 
-class Page4(tk.Frame):
+class Page3(Liste):
     def __init__(self, parent, controller):
-        titres = titres_partitions(bdd)
-        tk.Frame.__init__(self, parent)
-        liste = tk.Listbox(self)
-        for i, titre in enumerate(titres):
-            liste.insert(i, titre[3:-1])
-        liste.pack(side="top", fill="both", expand=True)
+        super().__init__(parent, controller)
+        bouton = tk.Button(self, text="inverser", command=lambda: self.inversion())
+        bouton.pack(side="top", fill="x")
+
+    def inversion(self):
+        partition = list(read_sheet(read_line_file(bdd, (self.liste.curselection()[0] + 1) * 2)))
+        inversion(frequency_to_notes(partition[0]))
+        partition = partition_to_line(partition[0], partition[1])
+        print(partition)
+
+
+class Page4(Liste):
+    def __init__(self, parent, controller):
+        super().__init__(parent, controller)
+        bouton = tk.Button(self, text="transposer", command=lambda: self.transposition())
+        bouton.pack(side="top", fill="x")
+
+    def transposition(self):
+        partition = list(read_sheet(read_line_file(bdd, (self.liste.curselection()[0] + 1) * 2)))
+        transposition(frequency_to_notes(partition[0]), simpledialog.askinteger(title="Transposer une partition",
+                                                                                prompt="Rentrer un entier"))
+        partition = partition_to_line(partition[0], partition[1])
+        print(partition)

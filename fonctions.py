@@ -44,8 +44,29 @@ def frequency_to_notes(frequences):
     """
     notes = []
     for frequence in frequences:
-        notes.append(consts.f_notes.index(frequence) + 1)
+        if frequence != -1:
+            notes.append(consts.f_notes.index(frequence) + 1)
     return notes
+
+
+def partition_to_line(notes, pauses):
+    """
+    :param notes: liste de notes musicales
+    :return: ligne de partitions
+    """
+    ligne = ""
+    print(notes, pauses)
+    for note, pause in notes, pauses:
+        print(note, pause)
+        temp = consts.pauses.index(pause)
+        if note == -1:
+            ligne += 'Z'
+        else:
+            if temp != 'p':
+                ligne += consts.notes.index(note)
+        ligne += temp
+        ligne += " "
+    return ligne
 
 
 def transposition(array, k):
@@ -56,13 +77,11 @@ def transposition(array, k):
     """
     # L est la taille de l'array
     L = len(array)
-    L = frequency_to_notes(array)
     for note in array:
         # pour chaque note on ajouter k
         note += k
         # on met au modulo L car on veut que la note reste dans l'intervalle de l'array originel
         note %= (L + 1)
-        note = consts.f_notes[note - 1]
 
 
 def inversion(array):
@@ -71,14 +90,12 @@ def inversion(array):
     :param array: liste de notes musicales
     """
     L = len(array)
-    L = frequency_to_notes(array)
 
     for note in array:
         # on inverse chaque note
         note = (L + 1) - note
         # on met au modulo L car on veut que la note reste dans l'intervalle de l'array originel
         note %= (L + 1)
-        note = consts.f_notes[note - 1]
 
 
 def markov(array, mode=1):
