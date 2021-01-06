@@ -21,7 +21,7 @@ class Application(tk.Tk):
 
         self.frames = {}
 
-        for F in (Menu, Page1, Page2, Page3, Page4):
+        for F in (Menu, Page1, Page2, Page4):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
