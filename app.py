@@ -58,7 +58,7 @@ class Menu(tk.Frame):
                             command=lambda: controller.show_frame(Page5))
         bouton2 = tk.Button(self, text='Ajouter une partition',
                             command=lambda: controller.show_frame(Page2))
-        bouton3 = tk.Button(self, text='Lecteur ( animation )',
+        bouton3 = tk.Button(self, text='Lecteur',
                             command=lambda: controller.show_frame(Playing))
         bouton1.pack(side="top", fill="x")
         bouton2.pack(side="top", fill="x")
@@ -167,10 +167,10 @@ class Page6(Liste):
 class Playing(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        length = self.winfo_width()
-        self.canvas = tk.Canvas(self, )
-        self.progress = ttk.Progressbar(self, orient=tk.HORIZONTAL, length=length, mode='indeterminate')
+        self.canvas = tk.Canvas(self, width=300, height=300, bg="white")
+        self.progress = ttk.Progressbar(self, orient=tk.HORIZONTAL, mode='indeterminate')
         self.bouton = tk.Button(self, text='pause', command=self.pause)
+        self.canvas.pack(side="top", fill="x")
         self.bouton.pack(side="bottom", fill="x")
         self.progress.pack(side="bottom", fill="x")
         self.thread_play = None
@@ -190,8 +190,10 @@ class Playing(tk.Frame):
         """
         self.progress["value"] = 0
         if self.thread_play:
+            # self.canvas.delete('all')
             self.stop_thread = not self.stop_thread
             while self.thread_play.is_alive():
+                print(self.stop_thread)
                 sleep(0.1)
             self.stop_thread = not self.stop_thread
 

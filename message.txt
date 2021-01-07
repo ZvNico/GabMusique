@@ -30,4 +30,9 @@ Zn Zn MIn MIb REn REb DOb p DOb p MIn SOLn MIn REn DOn REn DOb p Zc DOn REn MIb 
 DOn DOn LAn LAn LAn LAn LAb FAn FAn MIn MIn REn REn DOb LAn LAn FAn FAn MIn MIn MIn REn LAn LAn FAn FAn MIn MIn MIn REn DOn DOn LAn LAn LAn LAn LAb FAn FAn MIn MIn REn DOb
 #16 Bateau sur l'eau transposer
 MIn DOn MIn DOn REc MIc LAc MIn REc LAn MIn DOn MIn DOn MIn DOn REc MIc LAc MIn REc LAn DOn
-
+#17 a la claire de fontaine markov 2
+FAb FAn FAn DOn DOn LAn LAn SOLb FAn LAn LAn SOLn FAb LAb SOLn LAn LAn LAn DOn LAb LAn LAn SOLn FAn FAb FAb FAn LAn SOLn LAc LAn LAn LAn SOLb FAn LAc DOn DOn DOn LAb
+#18 colas mon ptit reuf markov 2
+LAb FAn LAb DOn DOn SOLn LAn LAb DOn LAb SOLn LAb SOLn FAn FAn FAn SOLb LAn DOn LAn SOLn FAb SOLn FAn SOLn FAn SOLb FAn FAn LAn SOLn LAb SOLn LAn FAn SOLn FAb
+#19 frere jacques markov 1
+SOLn SIn SOLn REn MIn REn SOLn REn SOLn LAn SIb SOLn LAn SIb Zn SOLn SOLn SOLn SIn DOn REn MIn REn SIn DOn SIn SOLn LAn SIn DOb SIn SOLn SOLb
