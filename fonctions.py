@@ -1,5 +1,6 @@
 from utils import *
 from tkinter import simpledialog
+from random import choice
 
 
 def append_partition(line, bdd=consts.bdd):
@@ -115,8 +116,48 @@ def inversion(liste):
                 liste[i] += L[0]
 
 
+def matrice_markov(liste, mode=1):
+    matrice = [[0 for i in range(7)] for i in range(7)]
+    start = 0
+    while liste[start] == '-1':
+        start += 1
+    p = 0
+    for i in range(start + 1, len(liste)):
+        if liste[i] != -1:
+            matrice[liste[i - 1 - p] - 1][liste[i] - 1] += 1
+            p = 0
+        else:
+            p += 1
+    return matrice
+
+
 def markov(liste, mode=1):
     """
     :param liste: liste de notes musicales
     :param mode: mode  1 ou 2
     """
+    if mode != 1 and mode != 2:
+        mode = 1
+    matrice = matrice_markov(liste, mode)
+    start = 0
+    while liste[start] == '-1':
+        start += 1
+    p = 0
+    for i in range(start + 1, len(liste)):
+        if liste[i] != -1:
+            choix = []
+            for j in range(7):
+                temp = matrice[liste[i - 1 - p] - 1][j]
+                if temp:
+                    if mode == 1:
+                        choix.append(j)
+                    else:
+                        for k in range(temp):
+                            choix.append(j)
+            liste[i] = choice(choix) + 1
+            p = 0
+        else:
+            p += 1
+
+
+markov(frequency_to_notes(read_sheet_frequences(read_line_file(consts.bdd, 2))))

@@ -20,7 +20,7 @@ class Application(tk.Tk):
 
         self.frames = {}
 
-        for F in (Menu, Page1, Page2, Page3, Page4, Page5, Playing):
+        for F in (Menu, Page1, Page2, Page3, Page4, Page5, Playing, Page6):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -28,7 +28,7 @@ class Application(tk.Tk):
         self.show_frame(Menu)
 
     def destroy(self):
-        toggle_thread_play()
+        self.frames[Playing].stop_thread = True
         super(Application, self).destroy()
 
     def show_frame(self, cont):
@@ -85,7 +85,7 @@ class Page2(tk.Frame):
         bouton3 = tk.Button(self, text='par transposition une partition existante',
                             command=lambda: controller.show_frame(Page4))
         bouton4 = tk.Button(self, text='en créant une partition depuis celles déjà existante',
-                            command=lambda: controller.show_frame(Page4))
+                            command=lambda: controller.show_frame(Page6))
         label.pack(side="top", fill="x")
         bouton1.pack(side="top", fill="x")
         bouton2.pack(side="top", fill="x")
@@ -117,10 +117,10 @@ class Page3(Liste):
 class Page4(Liste):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
-        bouton = tk.Button(self, text="transposer", command=lambda: self.transposition(controller))
+        bouton = tk.Button(self, text="transposer", command=lambda: self.transposition())
         bouton.pack(side="top", fill="x")
 
-    def transposition(self, controller):
+    def transposition(self):
         line = read_line_file(bdd, (self.liste.curselection()[0] + 1) * 2)
         notes = list(read_sheet_frequences(line))
         notes = frequency_to_notes(notes)
@@ -149,28 +149,54 @@ class Page5(tk.Frame):
         controller.thread = controller.play(*read_sheet(read_line_file(filename, 1)))
 
 
+class Page6(Liste):
+    def __init__(self, parent, controller):
+        super().__init__(parent, controller)
+        bouton = tk.Button(self, text="appliquer markov", command=lambda: self.markov())
+        bouton.pack(side="top", fill="x")
+
+    def markov(self):
+        line = read_line_file(bdd, (self.liste.curselection()[0] + 1) * 2)
+        notes = list(read_sheet_frequences(line))
+        notes = frequency_to_notes(notes)
+        markov(notes, simpledialog.askinteger(title="Markov", prompt="Markov mode 1 ou 2 ?"))
+        partition = partition_to_line(notes, read_pauses(line))
+        append_partition(partition)
+
+
 class Playing(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         length = self.winfo_width()
+        self.canvas = tk.Canvas(self, )
         self.progress = ttk.Progressbar(self, orient=tk.HORIZONTAL, length=length, mode='indeterminate')
-        self.bouton = tk.Button()
+        self.bouton = tk.Button(self, text='pause', command=self.pause)
+        self.bouton.pack(side="bottom", fill="x")
         self.progress.pack(side="bottom", fill="x")
         self.thread_play = None
         self.stop_thread = False
+        self.pause_state = False
+
+    def pause(self):
+        if self.bouton['text'] == 'pause':
+            self.bouton.configure(text='relancer')
+        else:
+            self.bouton.configure(text='pause')
+        self.pause_state = not self.pause_state
 
     def play(self, frequences, pauses):
         """
         Fonction intermédiaire qui sert a lancer la fonction playsheet en background
         """
         self.progress["value"] = 0
-
         if self.thread_play:
             self.stop_thread = not self.stop_thread
             while self.thread_play.is_alive():
                 sleep(0.1)
             self.stop_thread = not self.stop_thread
 
+        if self.pause_state:
+            self.pause()
         self.thread_play = threading.Thread(target=self.play_sheet, name="Player", args=(frequences, pauses))
         self.thread_play.start()
 
@@ -181,9 +207,16 @@ class Playing(tk.Frame):
         :param frequences: liste de fréquences
         :param pauses: liste de durées
         """
+        temps = 0
+        for temp in pauses:
+            temps += temp
         for i in range(len(frequences)):
-            if not self.stop_thread:
-                t = time()
-                sound(frequences[i], pauses[i])
-                # bah c'est mieux sans pause enfait
-                # sleep(pauses[i])
+            if not self.pause_state:
+                if not self.stop_thread:
+                    sound(frequences[i], pauses[i])
+                    self.progress["value"] += pauses[i] * (100 / temps)
+                    # bah c'est mieux sans pause enfait
+                    # sleep(pauses[i])
+            else:
+                while self.pause_state and not self.stop_thread:
+                    sleep(0.1)
