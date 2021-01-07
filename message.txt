@@ -30,4 +30,3 @@ Zn Zn MIn MIb REn REb DOb p DOb p MIn SOLn MIn REn DOn REn DOb p Zc DOn REn MIb 
 DOn DOn LAn LAn LAn LAn LAb FAn FAn MIn MIn REn REn DOb LAn LAn FAn FAn MIn MIn MIn REn LAn LAn FAn FAn MIn MIn MIn REn DOn DOn LAn LAn LAn LAn LAb FAn FAn MIn MIn REn DOb
 #16 Bateau sur l'eau transposer
 MIn DOn MIn DOn REc MIc LAc MIn REc LAn MIn DOn MIn DOn MIn DOn REc MIc LAc MIn REc LAn DOn
-

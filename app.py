@@ -146,7 +146,7 @@ class Page5(tk.Frame):
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Selectionner une partition",
                                               filetypes=(("txt files", "*.txt"),))
-        controller.thread = controller.play(*read_sheet(read_line_file(filename, 2)))
+        controller.thread = controller.play(*read_sheet(read_line_file(filename, 1)))
 
 
 class Playing(tk.Frame):
