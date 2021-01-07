@@ -154,8 +154,10 @@ class Playing(tk.Frame):
         tk.Frame.__init__(self, parent)
         length = self.winfo_width()
         self.progress = ttk.Progressbar(self, orient=tk.HORIZONTAL, length=length, mode='indeterminate')
+        self.bouton = tk.Button()
         self.progress.pack(side="bottom", fill="x")
         self.thread_play = None
+        self.stop_thread = False
 
     def play(self, frequences, pauses):
         """
@@ -164,10 +166,24 @@ class Playing(tk.Frame):
         self.progress["value"] = 0
 
         if self.thread_play:
-            toggle_thread_play()
+            self.stop_thread = not self.stop_thread
             while self.thread_play.is_alive():
                 sleep(0.1)
-            toggle_thread_play()
+            self.stop_thread = not self.stop_thread
 
-        self.thread_play = threading.Thread(target=play_sheet, name="Player", args=(frequences, pauses))
+        self.thread_play = threading.Thread(target=self.play_sheet, name="Player", args=(frequences, pauses))
         self.thread_play.start()
+
+    def play_sheet(self, frequences, pauses):
+        """
+        Fonction qui à partir d’une séquence de fréquences et de durées, appelle
+        les fonctions sound et sleep pour lire la partition musicale.
+        :param frequences: liste de fréquences
+        :param pauses: liste de durées
+        """
+        for i in range(len(frequences)):
+            if not self.stop_thread:
+                t = time()
+                sound(frequences[i], pauses[i])
+                # bah c'est mieux sans pause enfait
+                # sleep(pauses[i])

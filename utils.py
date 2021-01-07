@@ -4,7 +4,6 @@ from simpleaudio import play_buffer
 import consts
 import threading
 
-stop_thread_play = False
 
 
 def toggle_thread_play():
@@ -134,16 +133,3 @@ def read_sheet(ligne):
     return read_sheet_frequences(ligne), read_sheet_pauses(ligne)
 
 
-def play_sheet(frequences, pauses):
-    """
-    Fonction qui à partir d’une séquence de fréquences et de durées, appelle
-    les fonctions sound et sleep pour lire la partition musicale.
-    :param frequences: liste de fréquences
-    :param pauses: liste de durées
-    """
-    for i in range(len(frequences)):
-        if not globals()['stop_thread_play']:
-            t = time()
-            sound(frequences[i], pauses[i])
-            # bah c'est mieux sans pause enfait
-            # sleep(pauses[i])
