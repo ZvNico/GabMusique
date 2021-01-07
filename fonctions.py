@@ -79,7 +79,7 @@ def minpositif(liste):
     for i in range(1, len(liste)):
         if liste[i] > 0 and liste[i] < minimum:
             minimum = liste[i]
-    return liste[i]
+    return minimum
 
 
 def transposition(liste, k):
