@@ -22,3 +22,7 @@ Zn Zn SIn SIb LAn LAb SOLb p SOLb p SIn DOn SIn LAn SOLn LAn SOLb p Zc SOLn LAn 
 MIn DOn MIn DOn REc MIc FAc MIn REc SOLn MIn DOn MIn DOn MIn DOn REc MIc FAc MIn REc SOLn DOn
 #12 C'est la mère Michel
 FAc p Zb FAn FAc FAn FAc DOn FAc SOLn LAn SOLn FAn Zc FAc MIc p Zb REn MIc FAn SOLc LAn SOLc FAn MIn REn DOb DOn Zc DOc SOLc p Zb SOLn SOLc LAn SIn p SIc LAc FAn DOc LAn SOLn Zc SOLc SIc p Zb SIn SIc SIn LAc FAn FAc FAn SOLn DOn FAc FAc FAc MIn REn REn p Zb REn REc FAn FAc SOLn DOn DOc p Zb DOn DOn Zc DOc FAn LAn DOc SIn LAc SOLn FAc DOn DOc DOn FAc FAn FAc MIn REn REc p Zb REn REc FAn FAc SOLn DOn DOc p Zb SOLn DOn Zc DOc FAn LAn DOc SIn LAc SOLn FAc DOn DOc DOn FAn Zn
+#13 Roi dagoberd inverser
+Zn Zn LAn LAb SIn SIb DOb p DOb p LAn SOLn LAn SIn DOn SIn DOb p Zc DOn SIn LAb LAn LAn SOLn FAn SIb SIn SIn DOn SIn LAb LAn LAn SOLn FAn SIb SIn SIb LAn LAb SIn SIb DOn DOb p SIb p LAn SOLn LAn SIn DOn SIn DOb p
+#14 Roi dagobert transposer
+Zn Zn MIn MIb REn REb DOb p DOb p MIn SOLn MIn REn DOn REn DOb p Zc DOn REn MIb MIn MIn SOLn LAn REb REn REn DOn REn MIb MIn MIn SOLn LAn REb REn REb MIn MIb REn REb DOn DOb p REb p MIn SOLn MIn REn DOn REn DOb p

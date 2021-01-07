@@ -74,6 +74,48 @@ def read_line_file(f, num):
         return fichier.readline()
 
 
+def read_pauses(ligne):
+    nouv_ligne = ""
+    for elt in ligne:
+        if elt in consts.pauses or elt == 'p':
+            nouv_ligne += elt
+    return nouv_ligne
+
+
+def read_sheet_pauses(ligne):
+    # on importe nos dictionnaires de durées
+    const_pauses = calc_duration(consts.pauses, consts.d0)
+    durees = []
+    # on transforme la chaine en liste de chaine pour isolé les notes
+    ligne = list(ligne.split(" "))
+    # on supprime le caractere retour a la ligne de la fin de ligne
+    ligne[-1] = ligne[-1][:-1]
+    for note in ligne:
+        if note[0] == 'p':
+            durees[-1] *= 1.5
+        else:
+            durees.append(const_pauses[note[-1]])
+    return durees
+
+
+def read_sheet_frequences(ligne):
+    # on importe nos dictionnaires de fréquences
+    const_frequences = calc_frequency(consts.notes, consts.f_notes)
+    frequences = []
+
+    # on transforme la chaine en liste de chaine pour isolé les notes
+    ligne = list(ligne.split(" "))
+    # on supprime le caractere retour a la ligne de la fin de ligne
+    ligne[-1] = ligne[-1][:-1]
+    for note in ligne:
+        if note[0] != 'p':
+            if note[:-1] == 'Z':
+                frequences.append(-1)
+            else:
+                frequences.append(const_frequences[note[:-1]])
+    return frequences
+
+
 def read_sheet(ligne):
     """
     Fonction qui à partir d’une ligne du fichier extrait les notes, les figures, les silences et les points
@@ -81,28 +123,7 @@ def read_sheet(ligne):
     :param ligne: ligne de la base de donnée
     :return: une liste de fréquences et une liste de durée
     """
-    # on importe nos dictionnaires de fréquences et de durées
-    const_pauses = calc_duration(consts.pauses, consts.d0)
-    const_frequences = calc_frequency(consts.notes, consts.f_notes)
-
-    frequences = []
-    durees = []
-
-    # on transforme la chaine en liste de chaine pour isolé les notes
-    ligne = list(ligne.split(" "))
-    # on supprime le caractere retour a la ligne de la fin de ligne
-    ligne[-1] = ligne[-1][:-1]
-
-    for note in ligne:
-        if note[0] == 'p':
-            durees[-1] *= 1.5
-        else:
-            if note[:-1] == 'Z':
-                frequences.append(-1)
-            else:
-                frequences.append(const_frequences[note[:-1]])
-            durees.append(const_pauses[note[-1]])
-    return frequences, durees
+    return read_sheet_frequences(ligne), read_sheet_pauses(ligne)
 
 
 def play_sheet(frequences, pauses):

@@ -18,7 +18,7 @@ def append_partition(line, bdd=consts.bdd):
         titre = simpledialog.askstring(title="Ajouter partition", prompt="Rentrer le titre de votre partition")
         if titre:
             fichier.writelines(f"#{i} {titre}\n")
-            fichier.writelines(line)
+            fichier.writelines(line + "\n")
 
 
 def titres_partitions(bdd=consts.bdd):
@@ -46,60 +46,80 @@ def frequency_to_notes(frequences):
     for frequence in frequences:
         if frequence != -1:
             notes.append(consts.f_notes.index(frequence) + 1)
+        else:
+            notes.append(frequence)
     return notes
 
 
 def partition_to_line(notes, pauses):
     """
     :param notes: liste de notes musicales
+    :param pauses: liste de pauses déjà en caractère
     :return: ligne de partitions
     """
     ligne = ""
-    print(notes, pauses)
-    for note, pause in notes, pauses:
-        print(note, pause)
-        temp = consts.pauses.index(pause)
-        if note == -1:
-            ligne += 'Z'
+    p = 0
+    print(notes)
+    print(pauses)
+    print(len(pauses), len(notes))
+    minimum = minpositif(notes)
+    for i in range(len(pauses)):
+        if pauses[i] != 'p':
+            if notes[i - p] == -1:
+                ligne += 'Z'
+            else:
+                ligne += consts.notes[notes[i - p] - minimum]
         else:
-            if temp != 'p':
-                ligne += consts.notes.index(note)
-        ligne += temp
+            p += 1
+        ligne += pauses[i]
         ligne += " "
+
     return ligne
 
 
-def transposition(array, k):
+def minpositif(liste):
+    minimum = liste[0]
+    for i in range(1, len(liste)):
+        if liste[i] > 0 and liste[i] < minimum:
+            minimum = liste[i]
+    return liste[i]
+
+
+def transposition(liste, k):
     """
     Opération de transposition sur une partition musicales
-    :param array: liste de notes musicales
+    :param liste: liste de notes musicales
     :param k: entier
     """
-    # L est la taille de l'array
-    L = len(array)
-    for note in array:
-        # pour chaque note on ajouter k
-        note += k
-        # on met au modulo L car on veut que la note reste dans l'intervalle de l'array originel
-        note %= (L + 1)
+    L = [minpositif(liste), max(liste)]
+    for i in range(len(liste)):
+        if liste[i] != -1:
+            # pour chaque note on ajouter k
+            liste[i] += k
+            # on met au modulo L car on veut que la note reste dans l'intervalle de l'liste originel
+            liste[i] %= (L[1] + 1)
+            if liste[i] == 0:
+                liste[i] += L[0]
 
 
-def inversion(array):
+def inversion(liste):
     """
     Opération d'inversion sur un ensemble de notes musicales
-    :param array: liste de notes musicales
+    :param liste: liste de notes musicales
     """
-    L = len(array)
+    L = [minpositif(liste), max(liste)]
+    for i in range(len(liste)):
+        if liste[i] != -1:
+            # on inverse chaque note
+            liste[i] = (L[1] + 1) - liste[i]
+            # on met au modulo L car on veut que la note reste dans l'intervalle de l'liste originel
+            liste[i] %= (L[1] + 1)
+            if liste[i] == 0:
+                liste[i] += L[0]
 
-    for note in array:
-        # on inverse chaque note
-        note = (L + 1) - note
-        # on met au modulo L car on veut que la note reste dans l'intervalle de l'array originel
-        note %= (L + 1)
 
-
-def markov(array, mode=1):
+def markov(liste, mode=1):
     """
-    :param array: liste de notes musicales
+    :param liste: liste de notes musicales
     :param mode: mode  1 ou 2
     """
