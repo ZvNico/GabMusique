@@ -59,9 +59,6 @@ def partition_to_line(notes, pauses):
     """
     ligne = ""
     p = 0
-    print(notes)
-    print(pauses)
-    print(len(pauses), len(notes))
     minimum = minpositif(notes)
     for i in range(len(pauses)):
         if pauses[i] != 'p':

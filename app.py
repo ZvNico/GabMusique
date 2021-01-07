@@ -8,7 +8,6 @@ from fonctions import *
 class Application(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.thread = None
         accueil = tk.Button(self, text='Accueil', command=lambda: self.show_frame(Menu))
         quitter = tk.Button(self, text='Quitter', command=self.destroy)
         container = tk.Frame(self)
@@ -29,12 +28,16 @@ class Application(tk.Tk):
         self.show_frame(Menu)
 
     def destroy(self):
-        toggle_thread()
+        toggle_thread_play()
         super(Application, self).destroy()
 
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+
+    def play(self, frequences, pauses):
+        self.show_frame(Playing)
+        self.frames[Playing].play(frequences, pauses)
 
 
 class Liste(tk.Frame):
@@ -143,22 +146,45 @@ class Page5(tk.Frame):
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Selectionner une partition",
                                               filetypes=(("txt files", "*.txt"),))
-        controller.threads.append(controller.play(*read_sheet(read_line_file(filename, 2))))
+        controller.thread = controller.play(*read_sheet(read_line_file(filename, 2)))
 
 
 class Playing(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        progress = ttk.Progressbar
+        length = self.winfo_width()
+        self.progress = ttk.Progressbar(self, orient=tk.HORIZONTAL, length=length, mode='indeterminate')
+        self.progress.pack(side="bottom", fill="x")
+        self.thread_play = None
+        self.thread_anim = None
+        self.stop_thread_anim = False
 
     def play(self, frequences, pauses):
         """
         Fonction intermédiaire qui sert a lancer la fonction playsheet en background
         """
-        if self.thread:
-            toggle_thread()
-            while self.thread.is_alive():
+        if self.thread_play:
+            toggle_thread_play()
+            self.stop_thread_anim = not self.stop_thread_anim
+            while self.thread_play.is_alive() and self.thread_anim.is_alive():
                 sleep(0.1)
-            toggle_thread()
-        self.thread = threading.Thread(target=play_sheet, name="Downloader", args=(frequences, pauses))
-        self.thread.start()
+            toggle_thread_play()
+            self.stop_thread_anim = not self.stop_thread_anim
+
+        self.thread_play = threading.Thread(target=play_sheet, name="Player", args=(frequences, pauses))
+        self.thread_anim = threading.Thread(target=self.anim, name="Animation", args=(frequences, pauses))
+        self.thread_play.start()
+        self.thread_anim.start()
+
+    def anim(self, frequences, pauses):
+        self.progress["value"] = 0
+        temps = 0
+        for temp in pauses:
+            temps += temp
+        temp = temps
+        while temps > 0:
+            if self.stop_thread_anim:
+                break
+            sleep(1)
+            temps -= 1
+            self.progress["value"] = 100 - temp / temps * 100

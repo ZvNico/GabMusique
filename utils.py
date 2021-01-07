@@ -4,17 +4,17 @@ from simpleaudio import play_buffer
 import consts
 import threading
 
-stop_thread = False
+stop_thread_play = False
 
 
-def toggle_thread():
-    global stop_thread
-    stop_thread = not stop_thread
+def toggle_thread_play():
+    global stop_thread_play
+    stop_thread_play = not stop_thread_play
 
 
 def sound(freq, duration):
-    global stop_thread
-    if not stop_thread:
+    global stop_thread_play
+    if not stop_thread_play:
         # get time steps for each sample,"duration" is note duration in seconds
         sample_rate = 44100
         t = np.linspace(0, duration, int(duration * sample_rate), False)
@@ -116,6 +116,7 @@ def read_sheet_frequences(ligne):
     ligne = list(ligne.split(" "))
     # on supprime le caractere retour a la ligne de la fin de ligne
     ligne[-1] = ligne[-1][:-1]
+
     for note in ligne:
         if note[0] != 'p':
             if note[:-1] == 'Z':
