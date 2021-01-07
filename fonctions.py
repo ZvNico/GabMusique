@@ -71,7 +71,7 @@ def partition_to_line(notes, pauses):
         ligne += pauses[i]
         ligne += " "
 
-    return ligne
+    return ligne[:-1]
 
 
 def minpositif(liste):

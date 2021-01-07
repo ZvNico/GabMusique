@@ -28,3 +28,6 @@ Zn Zn LAn LAb SIn SIb DOb p DOb p LAn SOLn LAn SIn DOn SIn DOb p Zc DOn SIn LAb 
 Zn Zn MIn MIb REn REb DOb p DOb p MIn SOLn MIn REn DOn REn DOb p Zc DOn REn MIb MIn MIn SOLn LAn REb REn REn DOn REn MIb MIn MIn SOLn LAn REb REn REb MIn MIb REn REb DOn DOb p REb p MIn SOLn MIn REn DOn REn DOb p
 #15 a vous maman transposer
 DOn DOn LAn LAn LAn LAn LAb FAn FAn MIn MIn REn REn DOb LAn LAn FAn FAn MIn MIn MIn REn LAn LAn FAn FAn MIn MIn MIn REn DOn DOn LAn LAn LAn LAn LAb FAn FAn MIn MIn REn DOb
+#16 Bateau sur l'eau transposer
+MIn DOn MIn DOn REc MIc LAc MIn REc LAn MIn DOn MIn DOn MIn DOn REc MIc LAc MIn REc LAn DOn
+
