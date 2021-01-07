@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import ttk
 from consts import bdd
-from utils import *
 from fonctions import *
 
 
@@ -21,7 +21,7 @@ class Application(tk.Tk):
 
         self.frames = {}
 
-        for F in (Menu, Page1, Page2, Page3, Page4, Page5):
+        for F in (Menu, Page1, Page2, Page3, Page4, Page5, Playing):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -35,18 +35,6 @@ class Application(tk.Tk):
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
-
-    def play(self, frequences, pauses):
-        """
-        Fonction intermédiaire qui sert a lancer la fonction playsheet en background
-        """
-        if self.thread:
-            toggle_thread()
-            while self.thread.is_alive():
-                sleep(0.1)
-            toggle_thread()
-        self.thread = threading.Thread(target=play_sheet, name="Downloader", args=(frequences, pauses))
-        self.thread.start()
 
 
 class Liste(tk.Frame):
@@ -65,9 +53,12 @@ class Menu(tk.Frame):
         tk.Frame.__init__(self, parent)
         bouton1 = tk.Button(self, text='Jouer une parition',
                             command=lambda: controller.show_frame(Page5))
-        bouton3 = tk.Button(self, text='Ajouter une partition',
+        bouton2 = tk.Button(self, text='Ajouter une partition',
                             command=lambda: controller.show_frame(Page2))
+        bouton3 = tk.Button(self, text='Lecteur ( animation )',
+                            command=lambda: controller.show_frame(Playing))
         bouton1.pack(side="top", fill="x")
+        bouton2.pack(side="top", fill="x")
         bouton3.pack(side="top", fill="x")
 
 
@@ -156,4 +147,18 @@ class Page5(tk.Frame):
 
 
 class Playing(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        progress = ttk.Progressbar
 
+    def play(self, frequences, pauses):
+        """
+        Fonction intermédiaire qui sert a lancer la fonction playsheet en background
+        """
+        if self.thread:
+            toggle_thread()
+            while self.thread.is_alive():
+                sleep(0.1)
+            toggle_thread()
+        self.thread = threading.Thread(target=play_sheet, name="Downloader", args=(frequences, pauses))
+        self.thread.start()
