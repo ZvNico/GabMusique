@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
+from math import *
 from consts import bdd
 from fonctions import *
 
@@ -190,10 +191,9 @@ class Playing(tk.Frame):
         """
         self.progress["value"] = 0
         if self.thread_play:
-            # self.canvas.delete('all')
+            self.canvas.delete('all')
             self.stop_thread = not self.stop_thread
             while self.thread_play.is_alive():
-                print(self.stop_thread)
                 sleep(0.1)
             self.stop_thread = not self.stop_thread
 
@@ -209,16 +209,21 @@ class Playing(tk.Frame):
         :param frequences: liste de fréquences
         :param pauses: liste de durées
         """
+        colors = ['red', 'yellow', 'brown', 'green', 'blue', 'purple', 'pink']
         temps = 0
+        lines = []
+        angle = 0
         for temp in pauses:
             temps += temp
         for i in range(len(frequences)):
             if not self.pause_state:
                 if not self.stop_thread:
                     sound(frequences[i], pauses[i])
+                    # tkinter ne fonctionne pas en thread, enlever ce quil y a en dessous de ce commentaire pour pouvoir lancer une musique alors qu'un est déjà en cours
                     self.progress["value"] += pauses[i] * (100 / temps)
-                    # bah c'est mieux sans pause enfait
-                    # sleep(pauses[i])
+                    """pas d'animation, on a tenter d'integrer turtle sur le canvas mais 
+                    c'était tres compliqué et avec le create line de tkinter.Canvas 
+                    il y avait trop de trigonométrie c'était compliqué aussi"""
             else:
                 while self.pause_state and not self.stop_thread:
                     sleep(0.1)

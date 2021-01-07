@@ -36,3 +36,5 @@ FAb FAn FAn DOn DOn LAn LAn SOLb FAn LAn LAn SOLn FAb LAb SOLn LAn LAn LAn DOn L
 LAb FAn LAb DOn DOn SOLn LAn LAb DOn LAb SOLn LAb SOLn FAn FAn FAn SOLb LAn DOn LAn SOLn FAb SOLn FAn SOLn FAn SOLb FAn FAn LAn SOLn LAb SOLn LAn FAn SOLn FAb
 #19 frere jacques markov 1
 SOLn SIn SOLn REn MIn REn SOLn REn SOLn LAn SIb SOLn LAn SIb Zn SOLn SOLn SOLn SIn DOn REn MIn REn SIn DOn SIn SOLn LAn SIn DOb SIn SOLn SOLb
+#20 bateau markov 1
+MIn DOn REn MIn REc LAc DOc MIn LAc DOn MIn LAn DOn REn MIn LAn DOc MIc REc LAn MIc LAn MIn
