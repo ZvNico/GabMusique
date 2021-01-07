@@ -156,8 +156,6 @@ class Playing(tk.Frame):
         self.progress = ttk.Progressbar(self, orient=tk.HORIZONTAL, length=length, mode='indeterminate')
         self.progress.pack(side="bottom", fill="x")
         self.thread_play = None
-        self.thread_anim = None
-        self.stop_thread_anim = False
 
     def play(self, frequences, pauses):
         """
@@ -165,26 +163,9 @@ class Playing(tk.Frame):
         """
         if self.thread_play:
             toggle_thread_play()
-            self.stop_thread_anim = not self.stop_thread_anim
-            while self.thread_play.is_alive() and self.thread_anim.is_alive():
+            while self.thread_play.is_alive():
                 sleep(0.1)
             toggle_thread_play()
-            self.stop_thread_anim = not self.stop_thread_anim
 
-        self.thread_play = threading.Thread(target=play_sheet, name="Player", args=(frequences, pauses))
-        self.thread_anim = threading.Thread(target=self.anim, name="Animation", args=(frequences, pauses))
+        self.thread_play = threading.Thread(target=play_sheet, name="Player", args=(self, frequences, pauses))
         self.thread_play.start()
-        self.thread_anim.start()
-
-    def anim(self, frequences, pauses):
-        self.progress["value"] = 0
-        temps = 0
-        for temp in pauses:
-            temps += temp
-        temp = temps
-        while temps > 0:
-            if self.stop_thread_anim:
-                break
-            sleep(1)
-            temps -= 1
-            self.progress["value"] = 100 - temp / temps * 100
