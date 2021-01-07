@@ -161,11 +161,13 @@ class Playing(tk.Frame):
         """
         Fonction intermédiaire qui sert a lancer la fonction playsheet en background
         """
+        self.progress["value"] = 0
+
         if self.thread_play:
             toggle_thread_play()
             while self.thread_play.is_alive():
                 sleep(0.1)
             toggle_thread_play()
 
-        self.thread_play = threading.Thread(target=play_sheet, name="Player", args=(self, frequences, pauses))
+        self.thread_play = threading.Thread(target=play_sheet, name="Player", args=(frequences, pauses))
         self.thread_play.start()

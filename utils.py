@@ -134,21 +134,16 @@ def read_sheet(ligne):
     return read_sheet_frequences(ligne), read_sheet_pauses(ligne)
 
 
-def play_sheet(controller, frequences, pauses):
+def play_sheet(frequences, pauses):
     """
     Fonction qui à partir d’une séquence de fréquences et de durées, appelle
     les fonctions sound et sleep pour lire la partition musicale.
     :param frequences: liste de fréquences
     :param pauses: liste de durées
     """
-    global stop_thread_play
-    temps = 0
-    for temp in pauses:
-        temps += temp
     for i in range(len(frequences)):
-        if not stop_thread_play:
+        if not globals()['stop_thread_play']:
             t = time()
             sound(frequences[i], pauses[i])
-            controller.progress["value"] += (t - time()) * (temps / 100)
             # bah c'est mieux sans pause enfait
             # sleep(pauses[i])
