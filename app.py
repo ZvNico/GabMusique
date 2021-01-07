@@ -8,7 +8,7 @@ from fonctions import *
 class Application(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.threads = []
+        self.thread = None
         accueil = tk.Button(self, text='Accueil', command=lambda: self.show_frame(Menu))
         quitter = tk.Button(self, text='Quitter', command=self.destroy)
         container = tk.Frame(self)
@@ -28,9 +28,25 @@ class Application(tk.Tk):
 
         self.show_frame(Menu)
 
+    def destroy(self):
+        toggle_thread()
+        super(Application, self).destroy()
+
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+
+    def play(self, frequences, pauses):
+        """
+        Fonction intermédiaire qui sert a lancer la fonction playsheet en background
+        """
+        if self.thread:
+            toggle_thread()
+            while self.thread.is_alive():
+                sleep(0.1)
+            toggle_thread()
+        self.thread = threading.Thread(target=play_sheet, name="Downloader", args=(frequences, pauses))
+        self.thread.start()
 
 
 class Liste(tk.Frame):
@@ -59,7 +75,7 @@ class Page1(Liste):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
         play = tk.Button(self, text='Jouer la partition',
-                         command=lambda: play_sheet(
+                         command=lambda: controller.play(
                              *read_sheet(read_line_file(bdd, (self.liste.curselection()[0] + 1) * 2))))
         play.pack(side="top", fill="x")
 
@@ -136,4 +152,8 @@ class Page5(tk.Frame):
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Selectionner une partition",
                                               filetypes=(("txt files", "*.txt"),))
-        controller.threads.append(play_sheet(*read_sheet(read_line_file(filename, 2))))
+        controller.threads.append(controller.play(*read_sheet(read_line_file(filename, 2))))
+
+
+class Playing(tk.Frame):
+

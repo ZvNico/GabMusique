@@ -4,30 +4,39 @@ from simpleaudio import play_buffer
 import consts
 import threading
 
+stop_thread = False
+
+
+def toggle_thread():
+    global stop_thread
+    stop_thread = not stop_thread
+
 
 def sound(freq, duration):
-    # get time steps for each sample,"duration" is note duration in seconds
-    sample_rate = 44100
-    t = np.linspace(0, duration, int(duration * sample_rate), False)
-    tone = np.sin(freq * t * 6 * np.pi)
-    # normalize to 24−bit range
-    tone *= 8388607 / np.max(np.abs(tone))
-    # convert to 32−bit data
-    tone = tone.astype(np.int32)
-    # convert from 32−bit to 24−bit by building a new byte buffer,
-    # skipping every fourth bit
-    # note: this also works for 2−channel audio
-    i = 0
-    byte_array = []
-    for b in tone.tobytes():
-        if i % 4 != 3:
-            byte_array.append(b)
-        i += 1
-    audio = bytearray(byte_array)
-    # start playback
-    play_obj = play_buffer(audio, 1, 3, sample_rate)
-    # wait for playback to finish before exiting
-    play_obj.wait_done()
+    global stop_thread
+    if not stop_thread:
+        # get time steps for each sample,"duration" is note duration in seconds
+        sample_rate = 44100
+        t = np.linspace(0, duration, int(duration * sample_rate), False)
+        tone = np.sin(freq * t * 6 * np.pi)
+        # normalize to 24−bit range
+        tone *= 8388607 / np.max(np.abs(tone))
+        # convert to 32−bit data
+        tone = tone.astype(np.int32)
+        # convert from 32−bit to 24−bit by building a new byte buffer,
+        # skipping every fourth bit
+        # note: this also works for 2−channel audio
+        i = 0
+        byte_array = []
+        for b in tone.tobytes():
+            if i % 4 != 3:
+                byte_array.append(b)
+            i += 1
+        audio = bytearray(byte_array)
+        # start playback
+        play_obj = play_buffer(audio, 1, 3, sample_rate)
+        # wait for playback to finish before exiting
+        play_obj.wait_done()
 
 
 def calc_frequency(notes, frequences):
@@ -127,15 +136,6 @@ def read_sheet(ligne):
 
 
 def play_sheet(frequences, pauses):
-    """
-    Fonction intermédiaire qui sert a lancer la fonction playsheet en background
-    """
-    playing_thread = threading.Thread(target=play_sheet2, name="Downloader", args=(frequences, pauses))
-    playing_thread.start()
-    return playing_thread
-
-
-def play_sheet2(frequences, pauses):
     """
     Fonction qui à partir d’une séquence de fréquences et de durées, appelle
     les fonctions sound et sleep pour lire la partition musicale.
