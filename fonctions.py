@@ -77,7 +77,7 @@ def partition_to_line(notes, pauses):
 def minpositif(liste):
     minimum = liste[0]
     for i in range(1, len(liste)):
-        if liste[i] > 0 and liste[i] < minimum:
+        if 0 < liste[i] < minimum:
             minimum = liste[i]
     return minimum
 
